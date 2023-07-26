@@ -8,8 +8,7 @@ import json
 
 from django.contrib import admin
 from django.shortcuts import render, get_object_or_404
-from django.conf.urls import url
-from django.urls import reverse
+from django.urls import path, reverse
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 
@@ -108,15 +107,13 @@ class MultiUploadAdmin(admin.ModelAdmin):
         multi_urls = []
         if self.multiupload_list:
             multi_urls.append(
-                    url(r'^multiupload/$',
-                        self.admin_site.admin_view(self.admin_upload_view),
+                    path('multiupload/', self.admin_site.admin_view(self.admin_upload_view),
                         name=self.get_multiupload_list_view_name()
                     )
             )
         if self.multiupload_form:
             multi_urls.append(
-                    url(r'^(?P<id>\d+)/multiupload/$',
-                        self.admin_site.admin_view(self.admin_upload_view),
+                    path('<int:id>/multiupload/', self.admin_site.admin_view(self.admin_upload_view),
                         name=self.get_multiupload_form_view_name()
                     )
             )
